@@ -4,16 +4,7 @@ import 'package:loan_calc/loan_cal.dart';
 import 'package:xirr_flutter/xirr_flutter.dart';
 
 void main() {
-  LoanCalc loanCalc = LoanCalc(
-    annualIOFTax: 0.38,
-    dailyIOFRate: 0.0082,
-    minPeriods: 5,
-    maxPeriods: 15,
-    monthlyInterestRate: 15.9,
-    minimumInstallmentValue: 300,
-    tacLimit: 250,
-    tacRate: 12,
-  );
+  final loanCalc = LoanCalc();
 
   group('LoanCalc Tests', () {
     group('calculateTAC', () {
@@ -675,10 +666,10 @@ void main() {
     group('generateInstallmentList', () {
       test('should generate list of installments for valid inputs', () {
         const minimumInstallmentValue = 200.0;
-        const desiredValue = 5000.0;
-        const differenceInDays = 30;
 
-        loanCalc = LoanCalc(
+        final result = loanCalc.generateInstallmentList(
+          desiredValue: 5000,
+          differenceInDays: 30,
           annualIOFTax: 0.38,
           dailyIOFRate: 0.0082,
           minPeriods: 5,
@@ -687,11 +678,6 @@ void main() {
           minimumInstallmentValue: minimumInstallmentValue,
           tacLimit: 200,
           tacRate: 5,
-        );
-
-        final result = loanCalc.generateInstallmentList(
-          desiredValue: desiredValue,
-          differenceInDays: differenceInDays,
         );
 
         expect(result.installments, isNotEmpty);
@@ -703,10 +689,10 @@ void main() {
       test('should return empty installments when no valid installment found',
           () {
         const minimumInstallmentValue = 10000.0;
-        const desiredValue = 5000.0;
-        const differenceInDays = 30;
 
-        loanCalc = LoanCalc(
+        final result = loanCalc.generateInstallmentList(
+          desiredValue: 5000,
+          differenceInDays: 30,
           annualIOFTax: 0.38,
           dailyIOFRate: 0.0082,
           minPeriods: 6,
@@ -717,11 +703,6 @@ void main() {
           tacRate: 5,
         );
 
-        final result = loanCalc.generateInstallmentList(
-          desiredValue: desiredValue,
-          differenceInDays: differenceInDays,
-        );
-
         expect(result.installments, isEmpty);
         expect(result.selectedInstallment, isNull);
       });
@@ -730,23 +711,18 @@ void main() {
           'should include installment values greater than or equal to minimum installment value',
           () {
         const minimumInstallmentValue = 150.0;
-        const desiredValue = 4000.0;
-        const differenceInDays = 60;
-
-        loanCalc = LoanCalc(
-          annualIOFTax: 0.35,
-          dailyIOFRate: 0.0075,
-          minPeriods: 6,
-          maxPeriods: 12,
-          monthlyInterestRate: 2.0,
-          minimumInstallmentValue: minimumInstallmentValue,
-          tacLimit: 150.0,
-          tacRate: 4.0,
-        );
 
         final result = loanCalc.generateInstallmentList(
-          desiredValue: desiredValue,
-          differenceInDays: differenceInDays,
+          desiredValue: 4000.0,
+          differenceInDays: 60,
+          annualIOFTax: 0.38,
+          dailyIOFRate: 0.0082,
+          minPeriods: 5,
+          maxPeriods: 15,
+          monthlyInterestRate: 15.9,
+          minimumInstallmentValue: 300,
+          tacLimit: 250,
+          tacRate: 12,
         );
 
         expect(result.installments, isNotEmpty);
@@ -759,10 +735,10 @@ void main() {
       test('should return valid selectedInstallment if installments are found',
           () {
         const minimumInstallmentValue = 200.0;
-        const desiredValue = 6000.0;
-        const differenceInDays = 45;
 
-        loanCalc = LoanCalc(
+        final result = loanCalc.generateInstallmentList(
+          desiredValue: 6000,
+          differenceInDays: 45,
           annualIOFTax: 0.40,
           dailyIOFRate: 0.008,
           minPeriods: 6,
@@ -773,33 +749,23 @@ void main() {
           tacRate: 6.0,
         );
 
-        final result = loanCalc.generateInstallmentList(
-          desiredValue: desiredValue,
-          differenceInDays: differenceInDays,
-        );
-
         expect(result.selectedInstallment, isNotNull);
       });
 
       test('should calculate tac correctly and adjust financedAmount', () {
-        const minimumInstallmentValue = 1000.0;
         const desiredValue = 8000.0;
-        const differenceInDays = 30;
 
-        loanCalc = LoanCalc(
+        final result = loanCalc.generateInstallmentList(
+          desiredValue: desiredValue,
+          differenceInDays: 30,
           annualIOFTax: 0.38,
           dailyIOFRate: 0.0082,
           minPeriods: 6,
           maxPeriods: 24,
           monthlyInterestRate: 1.8,
-          minimumInstallmentValue: minimumInstallmentValue,
+          minimumInstallmentValue: 1000,
           tacLimit: 500.0,
           tacRate: 5.0,
-        );
-
-        final result = loanCalc.generateInstallmentList(
-          desiredValue: desiredValue,
-          differenceInDays: differenceInDays,
         );
 
         expect(result.installments, isNotEmpty);

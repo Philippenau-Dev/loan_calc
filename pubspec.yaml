@@ -1,5 +1,5 @@
 name: loan_calc
-description: "This package help you to calculate loan with TAC and IOF, generate installment list and installment."
+description: "LoanCalc é uma biblioteca em Dart para cálculo de empréstimos, incluindo o cálculo de parcelas, IOF, TAC e XIRR (Taxa Interna de Retorno Anualizada)."
 version: 1.0.0
 homepage:
 publish_to: none

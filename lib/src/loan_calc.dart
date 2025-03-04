@@ -5,36 +5,7 @@ import 'package:loan_calc/src/entity/installment_entity.dart';
 import 'package:xirr_flutter/xirr_flutter.dart';
 
 class LoanCalc {
-  LoanCalc({
-    required this.minimumInstallmentValue,
-    required this.monthlyInterestRate,
-    required this.tacRate,
-    required this.tacLimit,
-    required this.annualIOFTax,
-    required this.dailyIOFRate,
-    required this.minPeriods,
-    required this.maxPeriods,
-  });
-
-  factory LoanCalc.empty() => LoanCalc(
-        minimumInstallmentValue: 0,
-        monthlyInterestRate: 0,
-        tacRate: 0,
-        tacLimit: 0,
-        annualIOFTax: 0,
-        dailyIOFRate: 0,
-        minPeriods: 0,
-        maxPeriods: 0,
-      );
-
-  final double minimumInstallmentValue;
-  final double monthlyInterestRate;
-  final double tacRate;
-  final double tacLimit;
-  final double annualIOFTax;
-  final double dailyIOFRate;
-  final int minPeriods;
-  final int maxPeriods;
+  LoanCalc();
 
   // Calcula o TAC (Taxa de Abertura de Crédito)
   double calculateTAC(
@@ -203,6 +174,14 @@ class LoanCalc {
   GeneratedInstallmentsEntity generateInstallmentList({
     required int differenceInDays,
     required double desiredValue,
+    required double minimumInstallmentValue,
+    required double monthlyInterestRate,
+    required double tacRate,
+    required double tacLimit,
+    required double annualIOFTax,
+    required double dailyIOFRate,
+    required int minPeriods,
+    required int maxPeriods,
   }) {
     final installments = <InstallmentEntity>[];
 
