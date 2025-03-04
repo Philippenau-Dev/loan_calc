@@ -1,0 +1,25 @@
+name: loan_calc
+description: "This package help you to calculate loan with TAC and IOF, generate installment list and installment."
+version: 1.0.0
+homepage:
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  xirr_flutter:
+    git:
+      url: https://github.com/Philippenau-Dev/xirr_flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+
+flutter:
+
