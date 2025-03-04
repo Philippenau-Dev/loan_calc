@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:loan_calc/loan_cal.dart';
+import 'package:loan_calc/loan_calc.dart';
 import 'package:xirr_flutter/xirr_flutter.dart';
 
 void main() {
