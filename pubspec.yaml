@@ -10,9 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  xirr_flutter:
-    git:
-      url: https://github.com/Philippenau-Dev/xirr_flutter
+  xirr_flutter: ^1.0.3
 
 dev_dependencies:
   flutter_test:
