@@ -4,10 +4,18 @@ import 'package:loan_calc/src/entity/generated_installments_entity.dart';
 import 'package:loan_calc/src/entity/installment_entity.dart';
 import 'package:xirr_flutter/xirr_flutter.dart';
 
+/// A classe `LoanCalc` fornece métodos para cálculos financeiros relacionados a empréstimos,
+/// incluindo TAC, IOF, parcelas, XIRR e outros cálculos financeiros.
 class LoanCalc {
   LoanCalc();
 
-  // Calcula o TAC (Taxa de Abertura de Crédito)
+  /// Calcula a Taxa de Abertura de Crédito (TAC) com base no valor principal,
+  /// percentual da taxa e limite máximo.
+  ///
+  /// - [principalAmount]: Valor principal do empréstimo.
+  /// - [tacPercentage]: Percentual da TAC.
+  /// - [tacLimit]: Valor máximo permitido para a TAC.
+  /// - Retorna: O valor da TAC, limitado ao valor máximo especificado.
   double calculateTAC(
     double principalAmount,
     double tacPercentage,
@@ -17,7 +25,13 @@ class LoanCalc {
     return tac <= tacLimit ? tac : tacLimit;
   }
 
-  // Calcula o IOF total considerando o fixo e o diário
+  /// Calcula o valor total do IOF (Imposto sobre Operações Financeiras),
+  /// considerando o IOF fixo e as taxas diárias.
+  ///
+  /// - [fixedIOF]: Valor do IOF fixo.
+  /// - [dailyIOFRates]: Lista de taxas diárias de IOF.
+  /// - [loanAmount]: Valor total do empréstimo.
+  /// - Retorna: O valor total do IOF.
   double calculateTotalIOF({
     required double fixedIOF,
     required List<double> dailyIOFRates,
@@ -29,7 +43,11 @@ class LoanCalc {
     return totalIOF;
   }
 
-  // Calcula o IOF fixo
+  /// Calcula o valor do IOF fixo com base no valor do empréstimo e taxa anual.
+  ///
+  /// - [loanAmount]: Valor do empréstimo.
+  /// - [annualIOFRate]: Taxa anual do IOF.
+  /// - Retorna: O valor do IOF fixo.
   double calculateFixedIOF({
     required double loanAmount,
     required double annualIOFRate,
@@ -37,7 +55,12 @@ class LoanCalc {
     return loanAmount * (annualIOFRate / 100);
   }
 
-  // Calcula o IOF diário
+  /// Calcula o valor do IOF diário com base no valor presente, taxa diária e número de dias.
+  ///
+  /// - [vp]: Valor presente.
+  /// - [dailyIOFRate]: Taxa diária do IOF.
+  /// - [days]: Número de dias.
+  /// - Retorna: O valor do IOF diário, limitado a 365 dias.
   double calculateDailyIOF({
     required double vp,
     required double dailyIOFRate,
@@ -47,6 +70,14 @@ class LoanCalc {
     return vp * days * (dailyIOFRate / 100);
   }
 
+  /// Calcula o valor da parcela ajustada com base na taxa de juros mensal,
+  /// número de períodos, valor do empréstimo e diferença de dias.
+  ///
+  /// - [monthlyInterestRate]: Taxa de juros mensal.
+  /// - [periods]: Número de períodos.
+  /// - [loanAmount]: Valor do empréstimo.
+  /// - [differenceInDays]: Diferença de dias para ajuste.
+  /// - Retorna: O valor da parcela ajustada.
   double pmtAdjusted({
     required double monthlyInterestRate,
     required int periods,
@@ -62,6 +93,13 @@ class LoanCalc {
     return adjustmentFactor.abs();
   }
 
+  /// Calcula o valor da parcela com base na taxa de juros mensal,
+  /// número de períodos e valor financiado.
+  ///
+  /// - [monthlyInterestRate]: Taxa de juros mensal.
+  /// - [periods]: Número de períodos.
+  /// - [financedAmount]: Valor financiado.
+  /// - Retorna: O valor da parcela.
   double calculateInstallment({
     required double monthlyInterestRate,
     required int periods,
@@ -74,7 +112,10 @@ class LoanCalc {
     return pmt.abs();
   }
 
-  // Cálculo do XIRR (Taxa Interna de Retorno Anualizada
+  /// Calcula a Taxa Interna de Retorno (XIRR) com base em uma lista de transações.
+  ///
+  /// - [transactions]: Lista de transações financeiras.
+  /// - Retorna: A taxa interna de retorno anualizada.
   double xirr({
     required List<Transaction> transactions,
   }) {
@@ -98,7 +139,14 @@ class LoanCalc {
     return 0;
   }
 
-  //Gera lista de transações
+  /// Gera uma lista de transações financeiras para cálculo do XIRR.
+  ///
+  /// - [installmentAmount]: Valor da parcela.
+  /// - [pmt]: Valor do pagamento mensal.
+  /// - [numberOfPayments]: Número de pagamentos.
+  /// - [maxPeriods]: Número máximo de períodos.
+  /// - [differenceInDays]: Diferença de dias para o primeiro pagamento.
+  /// - Retorna: Lista de transações financeiras.
   List<Transaction> generateTransactions({
     required double installmentAmount,
     required double pmt,
@@ -149,7 +197,13 @@ class LoanCalc {
     return transactions;
   }
 
-  // Cálculo do Valor Presente (VP)
+  /// Calcula o Valor Presente (VP) com base no pagamento mensal,
+  /// taxa XIRR e diferença de dias.
+  ///
+  /// - [pmt]: Valor do pagamento mensal.
+  /// - [xirr]: Taxa interna de retorno.
+  /// - [differenceInDays]: Diferença de dias.
+  /// - Retorna: O valor presente.
   double calculateVP({
     required double pmt,
     required double xirr,
@@ -161,7 +215,12 @@ class LoanCalc {
     return result;
   }
 
-  // Calcula o valor do emprestimo
+  /// Calcula o valor total financiado, incluindo IOF e TAC.
+  ///
+  /// - [totalIOF]: Valor total do IOF.
+  /// - [tac]: Valor da TAC.
+  /// - [desiredValue]: Valor desejado do empréstimo.
+  /// - Retorna: O valor total financiado.
   double calculateFinancedBalance({
     required double totalIOF,
     required double tac,
@@ -170,7 +229,19 @@ class LoanCalc {
     return totalIOF + tac + desiredValue;
   }
 
-  // Cálculo da lista de parcelas
+  /// Gera uma lista de parcelas com base nos parâmetros fornecidos.
+  ///
+  /// - [differenceInDays]: Diferença de dias para o primeiro pagamento.
+  /// - [desiredValue]: Valor desejado do empréstimo.
+  /// - [minimumInstallmentValue]: Valor mínimo da parcela.
+  /// - [monthlyInterestRate]: Taxa de juros mensal.
+  /// - [tacRate]: Taxa de TAC.
+  /// - [tacLimit]: Limite máximo da TAC.
+  /// - [annualIOFTax]: Taxa anual do IOF.
+  /// - [dailyIOFRate]: Taxa diária do IOF.
+  /// - [minPeriods]: Número mínimo de períodos.
+  /// - [maxPeriods]: Número máximo de períodos.
+  /// - Retorna: Uma entidade contendo a lista de parcelas geradas.
   GeneratedInstallmentsEntity generateInstallmentList({
     required int differenceInDays,
     required double desiredValue,
@@ -227,7 +298,18 @@ class LoanCalc {
     );
   }
 
-  // Cálculo do valor da parcela
+  /// Gera uma entidade de parcela com base nos parâmetros fornecidos.
+  ///
+  /// - [monthlyInterestRate]: Taxa de juros mensal.
+  /// - [financedAmount]: Valor financiado.
+  /// - [desiredValue]: Valor desejado do empréstimo.
+  /// - [dailyIOFRate]: Taxa diária do IOF.
+  /// - [fixedIOF]: Valor do IOF fixo.
+  /// - [tac]: Valor da TAC.
+  /// - [differenceInDays]: Diferença de dias para o primeiro pagamento.
+  /// - [periods]: Número de períodos.
+  /// - [maxPeriods]: Número máximo de períodos.
+  /// - Retorna: Uma entidade de parcela.
   InstallmentEntity generateInstallment({
     required double monthlyInterestRate,
     required double financedAmount,
@@ -313,7 +395,11 @@ class LoanCalc {
     );
   }
 
-  // Calcula o número de dias entre duas datas
+  /// Calcula a diferença de dias entre duas datas.
+  ///
+  /// - [lastDate]: Data inicial.
+  /// - [currentDate]: Data final.
+  /// - Retorna: A diferença de dias em valor absoluto.
   int calculateDateAndDayDifference({
     required DateTime lastDate,
     required DateTime currentDate,
